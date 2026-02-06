@@ -357,15 +357,9 @@ func (t *Token) reconcileUserDataSecret(userDataSecret *corev1.Secret, token str
 		// TODO(alberto): prevent nodePool name collisions adding prefix to karpenter NodePool.
 		if t.nodePool.GetName() == "karpenter" {
 			userDataSecret.Labels[hyperv1.NodePoolLabel] = fmt.Sprintf("%s-%s", t.nodePool.Spec.ClusterName, t.nodePool.GetName())
-			ami := ""
-			if t.nodePool.Spec.Platform.AWS != nil && t.nodePool.Spec.Platform.AWS.AMI != "" {
-				ami = t.nodePool.Spec.Platform.AWS.AMI
-			} else {
-				var err error
-				ami, err = defaultNodePoolAMI(t.hostedCluster.Spec.Platform.AWS.Region, t.nodePool.Spec.Arch, t.releaseImage)
-				if err != nil {
-					return fmt.Errorf("failed to get default node pool AMI: %w", err)
-				}
+			ami, err := defaultNodePoolAMI(t.hostedCluster.Spec.Platform.AWS.Region, t.nodePool.Spec.Arch, t.releaseImage)
+			if err != nil {
+				return fmt.Errorf("failed to get default node pool AMI: %w", err)
 			}
 			userDataSecret.Labels["hypershift.openshift.io/ami"] = ami
 		}
