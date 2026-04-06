@@ -135,7 +135,9 @@ func NewToken(ctx context.Context, configGenerator *ConfigGenerator, cpoCapabili
 	globalconfig.ReconcileProxyConfigWithStatusFromHostedCluster(proxy, configGenerator.hostedCluster)
 
 	ami := ""
-	if configGenerator.hostedCluster.Spec.Platform.AWS != nil {
+	if configGenerator.nodePool.Spec.Platform.AWS != nil && configGenerator.nodePool.Spec.Platform.AWS.AMI != "" {
+		ami = configGenerator.nodePool.Spec.Platform.AWS.AMI
+	} else if configGenerator.hostedCluster.Spec.Platform.AWS != nil {
 		ami, err = defaultNodePoolAMI(configGenerator.hostedCluster.Spec.Platform.AWS.Region, configGenerator.nodePool.Spec.Arch, configGenerator.releaseImage)
 		if err != nil {
 			return nil, err
