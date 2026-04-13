@@ -14,9 +14,7 @@ import (
 )
 
 var (
-	// y-stream versions supported by e2e in main
-	Version50  = semver.MustParse("5.0.0")
-	Version423 = semver.MustParse("4.23.0")
+	// y-stream versions supported by e2e in release-4.22
 	Version422 = semver.MustParse("4.22.0")
 	Version421 = semver.MustParse("4.21.0")
 	Version420 = semver.MustParse("4.20.0")
@@ -34,8 +32,6 @@ func init() {
 	// Ensure that the version constants are valid semver versions
 	// This is a compile-time check to ensure that the versions are valid
 	// semver versions.
-	_ = Version50
-	_ = Version423
 	_ = Version422
 	_ = Version421
 	_ = Version420
